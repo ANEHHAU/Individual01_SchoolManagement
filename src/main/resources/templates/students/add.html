@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Thêm sinh viên</title>
+</head>
+<body>
+<h2>Thêm sinh viên mới</h2>
+<form th:action="@{/students/save}" th:object="${student}" method="post">
+  Tên: <input type="text" th:field="*{studentName}"><br>
+  Email: <input type="text" th:field="*{studentEmail}"><br>
+  Điện thoại: <input type="text" th:field="*{studentPhone}"><br>
+  Ngày sinh: <input type="text" th:field="*{studentDOB}"><br>
+  <button type="submit">Lưu</button>
+</form>
+<a href="/students">← Quay lại danh sách</a>
+</body>
+</html>

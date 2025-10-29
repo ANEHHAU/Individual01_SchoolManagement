@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.7'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+description = 'individual01'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+
+    // chuyển hướng đăng nhập
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // auto gen get/setter
+    implementation 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // ✅ MySQL Connector mới nhất (hỗ trợ MySQL 9.x)
+    implementation 'com.mysql:mysql-connector-j:9.0.0'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // mã hóa mật khẩu
+    implementation 'org.springframework.security:spring-security-crypto:6.5.6'
+
+}
+
+
+
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

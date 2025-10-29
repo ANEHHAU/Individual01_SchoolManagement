@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Thông tin tài khoản</title>
+</head>
+<body>
+<h2>Thông tin tài khoản</h2>
+
+<p><b>ID:</b> <span th:text="${account.accountId}"></span></p>
+<p><b>Tên đăng nhập:</b> <span th:text="${account.accountUsername}"></span></p>
+<p><b>Loại tài khoản:</b> <span th:text="${account.accountType}"></span></p>
+
+<a href="/auth/login">← Quay lại đăng nhập</a>
+</body>
+</html>

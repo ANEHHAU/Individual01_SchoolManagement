@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách sinh viên</title>
+</head>
+<body>
+<h2>Danh sách sinh viên</h2>
+<a href="/students/add">+ Thêm sinh viên</a>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Tên</th>
+        <th>Email</th>
+        <th>Điện thoại</th>
+        <th>Ngày sinh</th>
+        <th>Thao tác</th>
+    </tr>
+    <tr th:each="s : ${students}">
+        <td th:text="${s.studentId}"></td>
+        <td th:text="${s.studentName}"></td>
+        <td th:text="${s.studentEmail}"></td>
+        <td th:text="${s.studentPhone}"></td>
+        <td th:text="${s.studentDOB}"></td>
+        <td>
+            <a th:href="@{/students/edit/{id}(id=${s.studentId})}">Sửa</a> |
+            <a th:href="@{/students/delete/{id}(id=${s.studentId})}">Xoá</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
