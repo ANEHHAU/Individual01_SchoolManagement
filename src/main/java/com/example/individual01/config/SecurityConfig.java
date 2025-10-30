@@ -24,27 +24,27 @@ public class SecurityConfig {
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/css/**").permitAll()
+                        .requestMatchers("/auth/**", "/css/**", "/error/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/auth/login")
-                        .usernameParameter("accountUsername") // 👈 trùng form
-                        .passwordParameter("accountPassword") // 👈 trùng form
-                        .loginProcessingUrl("/auth/login") // xử lý POST
-                        .failureUrl("/auth/login?error=true") // khi sai
+                        .usernameParameter("accountUsername")
+                        .passwordParameter("accountPassword")
+                        .loginProcessingUrl("/auth/login")
+                        .failureUrl("/auth/login?error=true")
                         .defaultSuccessUrl("/auth/redirect", true)
                         .permitAll()
                 )
@@ -53,8 +53,10 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/auth/login?logout")
                         .permitAll()
                 )
-                .exceptionHandling(e -> e.accessDeniedPage("/auth/login"))
+                // 👇 khi không đủ quyền, redirect về /error/403
+                .exceptionHandling(ex -> ex.accessDeniedPage("/error/403"))
                 .csrf(csrf -> csrf.disable());
+
         return http.build();
     }
 }

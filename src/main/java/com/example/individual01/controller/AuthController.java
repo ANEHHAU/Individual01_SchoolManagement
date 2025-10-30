@@ -56,4 +56,41 @@ public class AuthController {
             return "redirect:/user/info";
         }
     }
+
+    // đổi mật khẩu
+    @GetMapping("/change-password")
+    public String showChangePasswordForm() {
+        return "auth/change-password";
+    }
+
+    @PostMapping("/change-password")
+    public String processChangePassword(@RequestParam String oldPassword,
+                                        @RequestParam String newPassword,
+                                        org.springframework.security.core.Authentication auth,
+                                        Model model) {
+        String username = auth.getName();
+        var optionalAcc = service.findByUsername(username);
+
+        if (optionalAcc.isEmpty()) {
+            model.addAttribute("error", "Không tìm thấy tài khoản.");
+            return "auth/change-password";
+        }
+
+        var acc = optionalAcc.get();
+        org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder encoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
+
+        // Kiểm tra mật khẩu cũ
+        if (!encoder.matches(oldPassword, acc.getAccountPassword())) {
+            model.addAttribute("error", "Mật khẩu cũ không đúng!");
+            return "auth/change-password";
+        }
+
+        // Cập nhật mật khẩu mới
+        acc.setPassword(newPassword);
+        service.update(acc.getAccountId(), acc.getAccountUsername(), acc.getAccountType());
+
+        model.addAttribute("message", "Đổi mật khẩu thành công!");
+        return "auth/change-password";
+    }
+
 }

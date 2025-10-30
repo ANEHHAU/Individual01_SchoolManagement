@@ -20,4 +20,6 @@ public interface AccountService {
     void changePassword(int id, String rawPassword);
 
     void delete(int id);
+
+    
 }
